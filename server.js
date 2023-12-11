@@ -1,27 +1,31 @@
-const express = require("express")
-const request = require ("request")
-
-const app =express();
-app.get('/',(req,res)=>{
-    res.send('Hello , this is weather api!')
-})
-app.listen(3000,()=> console.log("Server started"))
-
+const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
+const app = express();
+const apiKey = '0a98477efac6a62bd55eb6c73cc3494d'; // Replace with your weather API key
 
-const options = {
-  method: 'GET',
-  url: 'https://weatherapi-com.p.rapidapi.com/current.json',
-  params: {q: '53.1,-0.13'},
-  headers: {
-    'X-RapidAPI-Key': '3935b52b26msh17014823e451481p138558jsn1e05357d4eed',
-    'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+app.use(express.json());
+app.use(cors());
+
+app.post('/getWeather', async (req, res) => {
+  const { cities } = req.body;
+  const weatherData = {};
+
+  try {
+    const promises = cities.map(async (city) => {
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+      const temperature = response.data.main.temp;
+      weatherData[city] = `${temperature}°C`;
+    });
+
+    await Promise.all(promises);
+    res.json({ weather: weatherData });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch weather data' });
   }
-};
+});
 
-try {
-	const response = axios.request(options);
-	console.log(response.data);
-} catch (error) {
-	console.error(error);
-}
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
