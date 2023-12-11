@@ -24,7 +24,7 @@ app.post('/getWeather', async (req, res) => {
     await Promise.all(promises);
     res.json({ weather: weatherData });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch weather data' });
+    res.status(500).json({ error: 'Failed to fetch weather data ' });
   }
 });
 

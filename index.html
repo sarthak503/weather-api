@@ -2,12 +2,21 @@
 <html>
 <head>
   <title>Weather App</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <input type="text" id="cityInput" placeholder="Enter city names (comma-separated)">
-  <button onclick="getWeather()">Get Weather</button>
-  <div id="weatherResults"></div>
+    <h1>Weather API</h1>
+    <div class="container">
+        <input type="text" id="cityInput" placeholder="Enter city names (comma-separated)" width="100" >
+        <button onclick="getWeather()">Get Weather</button>
+    </div>
+    <div class="res">
+      <div class="result" id="weatherResults"> Real time temperatures of Cities : </div>
+    </div>
 
+    <div class="footer">
+      Made with <span>❤️</span> Sarthak Kumar
+    </div>
   <script>
     async function getWeather() {
       const citiesInput = document.getElementById('cityInput').value;
@@ -31,7 +40,7 @@
 
     function displayWeather(weather) {
       const weatherResults = document.getElementById('weatherResults');
-      weatherResults.innerHTML = '';
+      weatherResults.innerHTML = 'Real time temperatures of Cities : <br><br>';
 
       for (const city in weather) {
         const div = document.createElement('div');
