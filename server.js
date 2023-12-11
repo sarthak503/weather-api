@@ -1,11 +1,14 @@
+require('dotenv').config(); // Load environment variables from .env file
+
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
-const apiKey = '0a98477efac6a62bd55eb6c73cc3494d'; // Replace with your weather API key
 
 app.use(express.json());
 app.use(cors());
+
+const apiKey = process.env.WEATHER_API_KEY; // Access the API key from environment variable
 
 app.post('/getWeather', async (req, res) => {
   const { cities } = req.body;
